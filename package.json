@@ -1,6 +1,6 @@
 {
   "name": "simple-forms-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An awesome Form for React!",
   "main": "dist/simple-forms-react.js",
   "jsnext:main": "dist/simple-forms-react.esm.js",
@@ -12,13 +12,21 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": ["./node_modules/.bin/prettier --write", "eslint --fix", "git add"]
+    "*.js": [
+      "./node_modules/.bin/prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ankeetmaini/simple-forms-react.git"
   },
-  "keywords": ["forms", "react", "react-forms"],
+  "keywords": [
+    "forms",
+    "react",
+    "react-forms"
+  ],
   "babel": {
     "presets": [
       [
