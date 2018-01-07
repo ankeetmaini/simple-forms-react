@@ -12,21 +12,13 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "./node_modules/.bin/prettier --write",
-      "eslint --fix",
-      "git add"
-    ]
+    "*.js": ["./node_modules/.bin/prettier --write", "eslint --fix", "git add"]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ankeetmaini/simple-forms-react.git"
   },
-  "keywords": [
-    "forms",
-    "react",
-    "react-forms"
-  ],
+  "keywords": ["forms", "react", "react-forms"],
   "babel": {
     "presets": [
       [
@@ -39,7 +31,8 @@
     "plugins": [
       "external-helpers",
       "transform-object-rest-spread",
-      "transform-class-properties"
+      "transform-class-properties",
+      "transform-async-to-generator"
     ]
   },
   "author": "Ankeet Maini <ankeet.maini@gmail.com>",
@@ -54,6 +47,7 @@
   "devDependencies": {
     "babel-eslint": "^8.1.2",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
