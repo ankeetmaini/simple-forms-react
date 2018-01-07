@@ -6,8 +6,9 @@
   "jsnext:main": "dist/simple-forms-react.esm.js",
   "module": "dist/simple-forms-react.esm.js",
   "scripts": {
-    "build": "NODE_ENV=production rollup -c",
-    "lint": "eslint --fix index.js rollup.config.js"
+    "build": "rollup -c",
+    "lint": "eslint --fix index.js rollup.config.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
