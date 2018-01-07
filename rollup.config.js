@@ -11,7 +11,7 @@ export default {
         { file: `./dist/${NAME}.esm.js`, format: 'es', sourcemap: true, globals },
         {
             file: `./dist/${NAME}.js`,
-            format: 'iife',
+            format: 'umd',
             name: 'SimpleFormsReact',
             sourcemap: true,
             globals
