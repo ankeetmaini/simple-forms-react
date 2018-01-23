@@ -12,21 +12,13 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "./node_modules/.bin/prettier --write",
-      "eslint --fix",
-      "git add"
-    ]
+    "*.js": ["./node_modules/.bin/prettier --write", "eslint --fix", "git add"]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ankeetmaini/simple-forms-react.git"
   },
-  "keywords": [
-    "forms",
-    "react",
-    "react-forms"
-  ],
+  "keywords": ["forms", "react", "react-forms"],
   "babel": {
     "presets": [
       [
@@ -63,6 +55,7 @@
     "eslint-plugin-react": "^7.5.1",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.0",
+    "prettier": "^1.10.2",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "rimraf": "^2.6.2",
