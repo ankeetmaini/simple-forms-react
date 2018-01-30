@@ -147,3 +147,6 @@ export default class Form extends React.Component {
     });
   }
 }
+
+export const emptyValidator = val =>
+  val ? { valid: true } : { valid: false, message: 'Cannot be empty' };
