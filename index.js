@@ -125,6 +125,7 @@ export default class Form extends React.Component {
           setSubmitting: this.setSubmitting,
           values: this.state.values,
           isValid,
+          setValues: this.setValues,
         });
       }
       return;
