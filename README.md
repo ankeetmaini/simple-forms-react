@@ -8,7 +8,171 @@
 npm i -S simple-forms-react
 ```
 
-# usage
+# usage (simple, no validation)
+
+```js
+import React from 'react';
+import { render } from 'react-dom';
+import 'regenerator-runtime/runtime';
+
+import Form from 'simple-forms-react';
+
+const App = () => (
+  <div>
+    <h2>Simple Forms React!</h2>
+    <Form
+      initialValues={{
+        itemName: 'Coconut',
+      }}
+      onSubmit={({ values }) => {
+        console.log(values);
+      }}
+    >
+      {({ values, touched, fieldProps, handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              {...fieldProps({
+                id: 'itemName',
+                placeholder: 'Type to add item name',
+                value: values.itemName,
+              })}
+            />
+            {touched.itemName && values.itemName && <h5>{values.itemName}</h5>}
+          </div>
+          <div>
+            <select
+              {...fieldProps({
+                id: 'fruit',
+                value: values.fruit,
+              })}
+            >
+              <option value="">---select---</option>
+              <option value="apple">apple</option>
+              <option value="orange">orange</option>
+              <option value="grapes">grapes</option>
+            </select>
+            {touched.fruit && values.fruit && <h5>{values.fruit}</h5>}
+          </div>
+          <input type="submit" value="Submit" />
+        </form>
+      )}
+    </Form>
+  </div>
+);
+
+render(<App />, document.getElementById('root'));
+```
+
+[![Edit form-example-basic](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/r570l9r33m)
+
+# usage (with validation, sync and async)
+
+```js
+import React from 'react';
+import { render } from 'react-dom';
+import styled from 'styled-components';
+import 'regenerator-runtime/runtime';
+import Form from 'simple-forms-react';
+import Spinner from './Spinner';
+
+const Container = styled.div`
+  padding: 10px;
+`;
+const ButtonDiv = styled.div`
+  margin: 30px 0;
+`;
+const Error = styled.div`
+  color: red;
+`;
+const InputHolder = styled.div`
+  margin: 12px 0;
+`;
+
+const nameValidator = val => {
+  const regex = new RegExp(/^\d+$/);
+  return !regex.test(val)
+    ? { valid: true }
+    : { valid: false, message: 'No numbers allowed' };
+};
+const emptyValidator = val =>
+  !val ? { valid: false, message: 'This is required' } : { valid: true };
+
+const usernameValidator = val =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve({ valid: true }), 5000);
+  });
+
+const App = () => (
+  <Container>
+    <h1>simple-forms-react</h1>
+    <Form
+      initialValues={{
+        name: '',
+        username: '',
+      }}
+      validators={{
+        name: [emptyValidator, nameValidator],
+        username: [emptyValidator, usernameValidator],
+      }}
+      onSubmit={({ values, setSubmitting }) => {
+        console.log('Submitted values: ', values);
+        setSubmitting(false);
+      }}
+    >
+      {({
+        values,
+        touched,
+        errors,
+        valid,
+        fieldProps,
+        handleSubmit,
+        isSubmitting,
+      }) => (
+        <form onSubmit={handleSubmit}>
+          <InputHolder>
+            <label>Name: </label>
+            <input
+              {...fieldProps({
+                id: 'name',
+                value: values.name,
+                placeholder: 'Enter your name',
+              })}
+            />
+            {touched.name && errors.name && <Error>{errors.name}</Error>}
+          </InputHolder>
+          <InputHolder>
+            <label>Username</label>
+            <input
+              {...fieldProps({
+                id: 'username',
+                value: values.username,
+                placeholder: 'type your username',
+              })}
+            />
+            {valid.username && <Spinner radius="10" stroke="2" />}
+            {touched.username &&
+              errors.username && <Error>{errors.username}</Error>}
+          </InputHolder>
+          <ButtonDiv>
+            {isSubmitting ? (
+              <Spinner />
+            ) : (
+              <input type="submit" value="Submit" />
+            )}
+          </ButtonDiv>
+        </form>
+      )}
+    </Form>
+  </Container>
+);
+
+render(<App />, document.getElementById('root'));
+```
+
+[![Edit Form Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/9ljqypo87o)
+
+# api
 
 # `Form` props
 
