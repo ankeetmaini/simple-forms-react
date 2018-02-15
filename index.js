@@ -80,14 +80,24 @@ export default class Form extends React.Component {
       },
     }));
 
-  fieldProps = ({ onChange, onBlur, ...rest } = {}) => ({
-    onChange: compose(this.onChange, onChange),
-    onBlur: compose(this.onBlur, onBlur),
-    ...rest,
-  });
+  fieldProps = ({ onChange, onBlur, validators, ...rest } = {}) => {
+    if (validators) {
+      this.validators = this.validators || {};
+      this.validators[rest.id] = validators;
+    }
+
+    return {
+      onChange: compose(this.onChange, onChange),
+      onBlur: compose(this.onBlur, onBlur),
+      ...rest,
+    };
+  };
 
   async validate(inputName) {
-    const validators = this.props.validators[inputName] || [];
+    const validators =
+      this.props.validators[inputName] ||
+      (this.validators || {})[inputName] ||
+      [];
     const error = await validators.reduce(async (acc, validator) => {
       const lastError = await acc;
       if (lastError && !lastError.valid) return lastError;
@@ -108,15 +118,23 @@ export default class Form extends React.Component {
   }
 
   async handleSubmit(e) {
-    e.preventDefault();
+    e && e.preventDefault();
     this.setSubmitting(true);
-    const allInputs = Object.keys(this.props.initialValues);
+    const allInputs = Object.keys({
+      ...this.props.initialValues,
+      ...this.state.values,
+      ...this.props.validators,
+      ...(this.validators || {}),
+    });
     // touch all fields so that errors are visible
     this.setState({
       touched: allInputs.reduce((result, k) => ({ ...result, [k]: true }), {}),
     });
     // run validations
-    const errors = await Promise.all(allInputs.map(k => this.validate(k)));
+    const allValidators = { ...this.props.validators, ...this.validators };
+    const errors = await Promise.all(
+      Object.keys(allValidators).map(k => this.validate(k)),
+    );
     const isValid = !errors.filter(err => err && !err.valid).length;
 
     if (isValid) {
