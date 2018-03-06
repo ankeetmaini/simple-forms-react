@@ -38,14 +38,21 @@ export default class Form extends React.Component {
   }
 
   onBlur = e => {
-    e.persist();
+    // we don't know if this is an event object or not.
+    e.persist && e.persist();
     const { id, name } = e.target;
     const inputName = name || id;
     this.validate(inputName);
   };
 
+  getValue = (e, id, type) => {
+    const valueAccessor = this.valueAccessors[id];
+    if (valueAccessor) return valueAccessor(e);
+    return type === 'checkbox' ? e.target.checked : e.target.value;
+  };
+
   onChange = e => {
-    e.persist();
+    e.persist && e.persist();
     const { id, name, type } = e.target;
     const inputName = name || id;
     if (!id) {
@@ -54,7 +61,9 @@ export default class Form extends React.Component {
         e.target.outerHTML,
       );
     }
-    const value = type === 'checkbox' ? e.target.checked : e.target.value;
+
+    const value = this.getValue(e, id, type);
+
     this.setState(oldState =>
       update('touched')(
         update('values')(oldState, inputName, value),
@@ -80,11 +89,22 @@ export default class Form extends React.Component {
       },
     }));
 
-  fieldProps = ({ onChange, onBlur, validators, ...rest } = {}) => {
-    if (validators) {
-      this.validators = this.validators || {};
-      this.validators[rest.id] = validators;
-    }
+  fieldProps = ({
+    onChange,
+    onBlur,
+    validators,
+    valueAccessor,
+    ...rest
+  } = {}) => {
+    // throw if no id
+    if (!rest.id) throw new Error('Elements should have an attribute id');
+
+    // set nice defaults
+    this.validators = this.validators || {};
+    this.valueAccessors = this.valueAccessors || {};
+
+    if (validators) this.validators[rest.id] = validators;
+    if (valueAccessor) this.valueAccessors[rest.id] = valueAccessor;
 
     return {
       onChange: compose(this.onChange, onChange),
