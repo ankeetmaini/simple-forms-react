@@ -172,6 +172,10 @@ render(<App />, document.getElementById('root'));
 
 [![Edit Form Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/9ljqypo87o)
 
+# third-party components integration
+
+* [react-select](https://github.com/JedWatson/react-select) integration [![Edit form-example-basic](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/1xvn0z81j)
+
 # api
 
 # `Form` props
